@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en" class="h-100">
+
+<head>
+    <title>Loan Calculator: A Coding Project by Laurence McCabe.</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/site.css">
+    <link rel="icon" type="image/png" href="/img/favicon-32x32.png">
+    <link href="css/prism.css" rel="stylesheet">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abyssinica+SIL&family=Racing+Sans+One&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/5db21ba9c6.js" crossorigin="anonymous"></script>
+</head> 
+
+<body class="d-flex flex-column h-100 line-numbers">
+<!-- ==== Nav section-->
+<nav class="navbar navbar-expand-md navbar-light fixed-top bg-dark">
+    <div class="container-fluid ">
+        <a class="navbar-brand text-light logoFont" href="index.html"><img src="img/faviconLmWhiteAndBlack/favicon-16x16.png"  width="30" 
+            height="24" alt="" class="d-inline-block"> Loan Calculator</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse  navbar-collapse " id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0 ">
+                <li class="">
+                    <a class="nav-link active text-secondary" aria-current="page" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-secondary " href="/app.html">The App</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="/code.html">The Code</a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link text-secondary" target="_blank" href="/about.html">Git Repository</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-secondary" target="_blank" href="/about.html">About</a>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- ==== Main section-->
+    <main class="flex-shrink-0">
+       <div class="container py-5 px-5">
+           <h2 class="border-1 border-bottom border-dark mt-5">The Code for Loan Calculator:</h2>
+           <div class="row row-cols-1 row-cols-lg-2">
+            <!-- code side -->
+               <div class="col-lg-8">
+                   <pre class="line-numbers bg-black"><code class="language-javascript">
+                    function getTableValues()
+                    {
+                        var loanAmount = parseInt(document.getElementById("laId").value);
+                        var NumMonthlyPayments = parseInt(document.getElementById("paId").value);
+                        var rate = parseInt(document.getElementById("raId").value);
+                    
+                        //validate input
+                        if(loanAmount >1000000 || loanAmount < 1) {document.getElementById("laLabId").innerHTML = "Please enter a value between 1 and 1,000,000."};
+                        if(NumMonthlyPayments >1000000 || NumMonthlyPayments < 1) {document.getElementById("paLabId").innerHTML = "Please enter a value between 1 and 350"};
+                        if(rate >1000000 || rate < 1) {document.getElementById("raLabId").innerHTML = "Please enter a value between 1 and 20"};
+                    
+                        // call function to calculate NumMonthlyPayments and add values to an output outputArrayay.
+                        calcNumMonthlyPayments(loanAmount,NumMonthlyPayments,rate)
+                    }
+                    
+                    function calcNumMonthlyPayments(loanAmount, NumMonthlyPayments, rate)
+                    {
+                        // declare local constants variables for use within the for loop
+                        let month = 1;
+                        let totalInterest = 0;
+                        let reminingBalance = loanAmount;
+                        let interestPaymentPerMonth = 0;
+                        let principalPaymentPerMonth = 0;
+                        var outputArray = [];
+                        let monthlyInterestRate = getmonthlyRate(rate);
+
+                        for( i=0; i<NumMonthlyPayments; i++)
+                       {
+                            let monthlyPayment = getMonPay(loanAmount, NumMonthlyPayments, monthlyInterestRate);
+                            interestPaymentPerMonth = reminingBalance * monthlyInterestRate;
+                            principalPaymentPerMonth = monthlyPayment - interestPaymentPerMonth; 
+                            reminingBalance -= principalPaymentPerMonth;
+                            totalInterest += interestPaymentPerMonth;
+
+                            outputArray += `<tr><td>${month}</td><td>${monthlyPayment.toFixed(2)}</td><td>${principalPaymentPerMonth.toFixed(2)}<br></td><td>${interestPaymentPerMonth.toFixed(2)}</td><td>${totalInterest.toFixed(2)}</td><td>${reminingBalance.toFixed(2)}</td></tr>`
+                            
+                            payMonRem --;
+                            month++;
+                        }
+                        displayResults(outputArray,loanAmount,totalInterest,NumMonthlyPayments,monthlyInterestRate)
+                    }
+                    
+                        function getmonthlyRate(rate)
+                    {
+                        return rate / 1200;
+                    }
+                    
+                        function getMonthlyPayment(loanAmount, NumMonthlyPayments, monthlyInterestRate)
+                    {
+                            return  loanAmount * monthlyInterestRate * (Math.pow(1 + monthlyInterestRate,NumMonthlyPayments)) / (Math.pow(1 + monthlyInterestRate, NumMonthlyPayments) - 1);
+                    }
+                    
+                        function displayResults(outputArray,loanAmount,totalInterest,NumMonthlyPayments, monthlyInterestRate)
+                    {
+                            document.getElementById("invisId").classList.remove("invisible");
+                            document.getElementById("results").innerHTML = outputArray;
+                    
+                            document.getElementById("rightColId").classList.remove("invisible");
+                            document.getElementById("mpdiv").innerHTML = `${"$"+getMonthlyPayment(loanAmount, NumMonthlyPayments, monthlyInterestRate).toFixed(2)}`;
+                            document.getElementById("tpDiv").innerHTML = `${"$"+loanAmount}`;
+                            document.getElementById("tiDiv").innerHTML = `${"$"+totalInterest.toFixed(2)}`;
+                            let totalCost = totalInterest + loanAmount;
+                            document.getElementById("tcDiv").innerHTML = `${"$"+totalCost.toFixed(2)}`;
+                    
+                    }
+                   </code>
+                </pre>
+               </div>
+               <div class="col-lg-4">
+                   <p class="lead">The Code for displaying the Loan Calculator results is structured into main 3 functions, with the aid 
+                    of some small helper functions. </p>
+                   <h5>getTableValues()</h5>
+                   <p>Here, we obtain the values entered by the user (or the default values if none) via the value property. 
+                    We then validate the input on lines 8,9 and 10 by making sure the user has entered reasonable values to perform calculations for the 
+                    context of this applications purpose. <br>We then pass the values over to the next function to perform the calculations 
+                    and create an array of result values from these calculations which will be used to output to the screen.<br><br>
+
+                   <h5>calcNumMonthlyPayments()</h5>
+                   (*Please see below for this full function as the Prism.js API is having problems display some data.)
+                   From lines 19-26 we declare our constant variables for use within the for loop. <br>
+                   From lines 28-41 we loop through each iteration of the number of payment terms (60 in this case), updating the 
+                   variables each time to reflect the new month's payment requirements.<br><br>
+
+                   getMonPay() peforms the neccessary mathematical calculations to return each months payment.
+                   Whilst getmonthRate() performs a simple calculation to return the monthly rate in decimal format.
+
+                   </br><br>
+                   <h5>displayResults()</h5>
+                   Finally on line 47, displayResults() takes all the data created earlier and uses the Javascript document object model API 
+                   to access the elements of the page where we want to display the data to the user. Utilising string interpolation (lines 53,54,55 and 57) 
+                   via the innerHTML and classList methods which belong to the getElementById() class, we are able to acutely specify how the data is displayed. <br><br>
+                   The toFixed() method is an alternative to the Math.Round method. toFixed() allows for a more direct approach to the rounding of numbers.
+                   </p>
+               </div>
+           </div>
+           <div class="row border p-2">
+            *Missing code from above<br><br>
+            function calcNumMonthlyPayments(loanAmount, NumMonthlyPayments, rate)<br>
+                    {<br>
+                        // declare local constants variables for use within the for loop<br>
+                        let month = 1;<br>
+                        let totalInterest = 0;<br>
+                        let reminingBalance = loanAmount;<br>
+                        let interestPaymentPerMonth = 0;<br>
+                        let principalPaymentPerMonth = 0;<br>
+                        var outputArray = [];<br>
+                        let monthlyInterestRate = getmonthRate(rate);<br><br>
+
+                        for( i=0; i<'NumMonthlyPayments; i++)<br>
+                       {<br>
+                            let monthlyPayment = getMonthlyPayment(loanAmount, NumMonthlyPayments, monthlyInterestRate);<br>
+                            interestPaymentPerMonth = reminingBalance * monthlyInterestRate;<br>
+                            principalPaymentPerMonth = monthlyPayment - interestPaymentPerMonth; <br>
+                            reminingBalance -= principalPaymentPerMonth;<br>
+                            totalInterest += interestPaymentPerMonth;<br><br>
+
+                            outputArray += `<tr><td>${month}</td><td>${monthlyPayment.toFixed(2)}</td><td>${principalPaymentPerMonth.toFixed(2)} <br></td><td>${interestPaymentPerMonth.toFixed(2)}</td><td>${totalInterest.toFixed(2)}</td><td>${reminingBalance.toFixed(2)};</td></tr>`<br><br>                         
+                            month++;<br>
+                        }<br>
+                        displayResults(outputArray,loanAmount,totalInterest,NumMonthlyPayments,monthlyInterestRate);<br>
+                    }<br>
+
+           </div>
+       </div>
+    </main>
+    <!-- ==== Footer section-->
+    <footer class="footer mt-auto py-1 bg-dark sticky-footer">
+        <div class="container-fluid text-center">
+            <div class="row row-cols-1 row-cols-md-3">
+                <div class="col text-light justify-content-center align-items-center order-last order-md-first">
+                    <span class="text-muted FooterTextSize">&copy;2022 Laurence McCabe | laurence.mccabe@gmail.com</span> 
+                </div>
+                <div class="col text-light">
+                    <img src="img/faviconLmWhiteAndBlack/logo-no-background.png" alt="Laurence McCabe Logo" height="35px">
+                </div>
+                <div class="col d-flex align-items-center justify-content-center justify-content-md-end">
+                    <div class="row">
+                        <div class="col social"> <a href="#" target="_blank"><i class="fa fa-linkedin fa-1x" aria-hidden="true"></i></a></div>
+                        <div class="col social"> <a href="#" target="_blank"><i class="fa fa-github fa-1x" aria-hidden="true"></i></a></div>
+                        <div class="col social"> <a href="#" target="_blank"><i class="fa fa-twitter fa-1x" aria-hidden="true"></i></a></div>
+                        <div class="col social"> <a href="#" target="_blank"><i class="fa fa-youtube fa-1x" aria-hidden="true"></i></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Bootstrap JS -->
+   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
+    </script>
+    <script src="/js/prism.js"></script>
+    <script>
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        })
+    </script>
+
+</body>
+
+</html>

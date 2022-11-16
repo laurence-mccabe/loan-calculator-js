@@ -1,0 +1,94 @@
+       :root{
+        /* -- creates a variable */
+           --primary-color: rgb(13, 13, 216);
+           --secondary-color: rgb(241, 122, 11);
+           --dark-color: hsl(0, 24%, 12%);
+           --white-color: rgb(230, 238, 230);
+       }
+
+       body{
+           color:var(--dark-color);
+           background-color: rgb(31, 145, 215);
+       }
+       nav{
+           background-color: violet;
+       }
+       
+       footer .social>a{
+           color: white;
+           opacity: 0.75;
+       }
+
+       footer .social>a:hover{
+           opacity: .9;
+           color: var(--)
+       }
+
+       main>.container {
+           padding: 60px 15px 0;
+           margin-bottom: 5rem;
+       }
+        footer{
+            background-color: var(--dark-color);
+            padding-right: 1rem;
+            color:aqua;
+        }
+       
+        h1,h2,h3,h4,h5,h6{
+            color: var(--primary-color);
+        }
+
+       .sticky-footer {
+           position: sticky;
+           left: 0;
+           bottom: 0;
+           width: 100%;
+       }
+
+       .bsicon{
+           color: purple;
+       }
+       .jsicon{
+           color: yellowgreen;
+       }
+       .html5icon{
+           color: rgb(60, 102, 122);
+       }
+       .cssicon{
+           color: blue;
+       }
+
+       .checklist >li i{
+           color: orange;
+       }
+
+       code[class*="language-"],
+            pre[class*="language-"] {
+                white-space: pre-wrap;
+                word-break: break-all;
+                word-wrap: break-word;
+            }
+            
+       footer .social>a{
+            color: rgb(245, 246, 251);
+            opacity: .75;
+        }
+
+        footer.social>a:hover{
+            opacity: 0.9;
+            color: var(--secondary-color);
+        }
+        li:hover,i:hover{
+            color: rgb(70, 77, 33);
+        }
+        .checklist>li i{
+            color: rgb(24, 55, 181);
+        }
+        .logoFont{
+            font-family: 'Abyssinica SIL', serif;
+            font-family: 'Racing Sans One', cursive;
+        }
+        .FooterTextSize {
+            font-size: .75rem;
+        }
+        
